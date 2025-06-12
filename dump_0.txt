@@ -1,0 +1,7 @@
+/*
+  what is type safe?, what does it mean by weakly typed and strong typed
+  refernce and value type in c#
+*/
+
+// C# dump
+In the .NET F
