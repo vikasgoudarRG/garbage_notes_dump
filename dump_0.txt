@@ -56,5 +56,32 @@ numbers
     int.MaxValue
     int.MinValue
   can do with other types as well like, double, float, int, decimal
+
+types
+  ValueTuple
+    these are distinct from system tuples
+    ValueTuples are mutable whereas System.Tuple<> are immutable
+
+    Value tuples can have 7 direct elements, to extend, the 8th element has to be a nested tuple
+
+    // general
+    declaration syntax
+      (Type1 [field_name], Type2, [field_name]) <tuple_var> = (value1, value2)
+      can replace with 
+        var <tuple_var> = (value1, value2) // if field_name isn't going to be mentioned on LHS
+      another way to specify the field_name is on RHS
+      var <tuple_var> = (field_name : value_1, field_name : value_2)
+  
+    if no field_names are specidied, default field_name to access elements are - Item1, Item2 and so on ...
+  
+    to access elements
+    <tuple_var>.<field_name>
+  
+    tuple supports `==` and `!=`
+    the tuples must be of the same -arity
+    the field_names dont matter, only the values are compared
+  
+    returning tuples from methods
+    (type1 [field_name], type2 [field_name]) method() {}
   
   
