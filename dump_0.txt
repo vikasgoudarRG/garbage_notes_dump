@@ -44,5 +44,17 @@ string
     <bool_obj> = <string_var>.StartsWith(<string_instance>)
     <bool_obj> = <string_var>.EndsWith(<string_instance>)
 
+numbers
+  // general
+  to use `decimals` we need suffix `M`
+  ex:
+    decimal var = 1.0M
+
+  // properties
+  numbers has property MaxValue and MinValue
+  ex: int
+    int.MaxValue
+    int.MinValue
+  can do with other types as well like, double, float, int, decimal
   
   
