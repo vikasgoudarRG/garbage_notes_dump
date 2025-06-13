@@ -6,6 +6,7 @@
 /*
   > what is type safe?, what does it mean by weakly typed and strong typed
   > refernce and value type in c#
+  > record struct
 */
 
 
@@ -90,7 +91,31 @@ types
     returning tuples from methods
     (type1 [field_name], type2 [field_name]) method() {}
 
+  record
+    record class or record class
+      // general
+      records are immutable reference types (immutable only positional records, otherwise possible to make mutable properties) similiar classes but follow value based equality operations
   
+      declaration
+      public record record_var(type1 field_name, type2 field_2) // this is an example of positional records
+                                                                // positional records are immutable as they as similiar to property {get; init;}
+                                                                // however it is only shallow immutablility, if the positional parameter is a reference
+                                                                // can cannot change the reference itself, but we can change the value being pointed to
+      we can declare more memebers which can be more data elements and methods
+      ex:
+        public record record_var(type1 field_name, type2 field_2) // position records parameters
+        {
+          type3 field_name {get; set;} // the fields can be mutable !! only positional paramaters are strictly immutable
+          type3 field_name {get; init;}
+
+          // any methods you want
+        }
+  
+      shallow copying (value based) [with modification]
+      record_obj = record_var [with {field1 = value, field_2 = value}] 
+
+    record struct
+      // i don't know it 
   
   
   
