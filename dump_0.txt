@@ -22,27 +22,27 @@ string
 
   // properties
   string has a property Length
-    <string_var>.Length
+    string_var.Length
 
   // methods
   string has methods to Trim which returns a new modified string
-    <string_obj> = <string_var>.Trim()
-    <string_obj> = <string_var>.TrimStart()
-    <string_obj> = <string_var>.TrimEnd()
+    string_obj = string_var.Trim()
+    string_obj = string_var.TrimStart()
+    string_obj = string_var.TrimEnd()
 
   string has method to Replace a substring and return a new modified string
-    <string_obj> = <string_var>.Replace(<old_substr>, <new_substr>)
+    string_obj = string_var.Replace(old_substr, new_substr)
 
   string has method to create all upper or all lower case
-    <string_obj> = <string_var>.ToUpper()
-    <string_obj> = <string_var>.ToLower()
+    string_obj = string_var.ToUpper()
+    string_obj = string_var.ToLower()
 
   string has method to check wether a substring exists, returns a bool value
-    <bool_obj> = <string_var>.Contains(<substring>)
+    bool_obj = string_var.Contains(substring)
 
   string has method to check wether string StartsWith or EndsWith specified string, return bool value
-    <bool_obj> = <string_var>.StartsWith(<string_instance>)
-    <bool_obj> = <string_var>.EndsWith(<string_instance>)
+    bool_obj = string_var.StartsWith(string_instance)
+    bool_obj = string_var.EndsWith(string_instance)
 
 numbers
   // general
@@ -66,16 +66,16 @@ types
 
     // general
     declaration syntax
-      (Type1 [field_name], Type2, [field_name]) <tuple_var> = (value1, value2)
+      (Type1 [field_name], Type2, [field_name]) tuple_var = (value1, value2)
       can replace with 
-        var <tuple_var> = (value1, value2) // if field_name isn't going to be mentioned on LHS
+        var tuple_var = (value1, value2) // if field_name isn't going to be mentioned on LHS
       another way to specify the field_name is on RHS
-      var <tuple_var> = (field_name : value_1, field_name : value_2)
+      var tuple_var = (field_name : value_1, field_name : value_2)
   
     if no field_names are specidied, default field_name to access elements are - Item1, Item2 and so on ...
   
     to access elements
-    <tuple_var>.<field_name>
+    tuple_var.field_name
   
     tuple supports `==` and `!=`
     the tuples must be of the same -arity
@@ -85,11 +85,12 @@ types
     the tuples must be of the same -arity
     to make modifications with can use `with`
     ex:  
-      var <tuple_var_1> = <tuple_var_2> with { <field_name> = value }
+      var tuple_var_1 = tuple_var_2 with { field_name = value }
   
     returning tuples from methods
     (type1 [field_name], type2 [field_name]) method() {}
 
+  
   
   
   
