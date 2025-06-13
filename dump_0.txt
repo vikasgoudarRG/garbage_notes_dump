@@ -148,6 +148,10 @@ collection
     list_var.Sort()
 
 general structure
+  the program starts with the static Main method or top level statements
+  only one file can have top level statements
+  in case of both top level statements and Main method, compiler generates a warning that the Main method will not be used as an entry point, as the top level statements are taken as the entry point
+
   each program consists of zero or more namespaces
   each namespace contains types like
     class
@@ -156,5 +160,10 @@ general structure
     delegate
     namespace
 
-    
+  the parameter `string[] args` is optional and depends upon need
+  the Main method returns one of the following
+    int
+    void
+    Task<int>
+    Task
   
