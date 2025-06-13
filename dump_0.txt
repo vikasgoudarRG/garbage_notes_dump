@@ -80,8 +80,16 @@ types
     tuple supports `==` and `!=`
     the tuples must be of the same -arity
     the field_names dont matter, only the values are compared
+
+    tuple supports `=`
+    the tuples must be of the same -arity
+    to make modifications with can use `with`
+    ex:  
+      var <tuple_var_1> = <tuple_var_2> with { <field_name> = value }
   
     returning tuples from methods
     (type1 [field_name], type2 [field_name]) method() {}
+
+  
   
   
