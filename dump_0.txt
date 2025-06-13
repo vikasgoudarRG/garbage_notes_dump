@@ -7,6 +7,7 @@
   > what is type safe?, what does it mean by weakly typed and strong typed
   > refernce and value type in c#
   > record struct
+  > pattern matching segment of microsoft c# documentation
 */
 
 
@@ -59,6 +60,11 @@ numbers
   can do with other types as well like, double, float, int, decimal
 
 types
+  all named types are either class or struct types.
+  class is a reference type
+  struct is a value type
+  
+
   ValueTuple
     these are distinct from system tuples
     ValueTuples are mutable whereas System.Tuple<> are immutable
@@ -116,6 +122,39 @@ types
 
     record struct
       // i don't know it 
+
+collection
+  List<T>
+    // general
+    declaration
+    ex: List<int> list_var = [1,2,3,4,5]
   
-  
+    can access individual elements using square braces
+    list_var[index]
+
+    // properties
+    number of elements
+    list_var.Count
+
+    // methods
+    adding and removing
+    list_var.Add(element)
+    list_var.Remove(element)
+
+    finding the first occurence of an element
+    list_var.IndexOf(element) // returns -1 if not found
+
+    sorting
+    list_var.Sort()
+
+general structure
+  each program consists of zero or more namespaces
+  each namespace contains types like
+    class
+    struct
+    interface
+    delegate
+    namespace
+
+    
   
