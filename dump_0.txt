@@ -1,7 +1,48 @@
+// content
+1. C# first iteration
+
+
+// doubts
 /*
-  what is type safe?, what does it mean by weakly typed and strong typed
-  refernce and value type in c#
+  > what is type safe?, what does it mean by weakly typed and strong typed
+  > refernce and value type in c#
 */
 
-// C# dump
-In the .NET F
+
+
+// C# first iteration
+string
+  // general
+  string interpolation
+    if you add `$` before opening quotes of a string, you can add variables inside the string using curly braces
+    ex:
+      $"hello {friend_var}"
+
+  methods that modify strings, return a new string, they dont make changes to the original string
+
+  // properties
+  string has a property Length
+    <string_var>.Length
+
+  // methods
+  string has methods to Trim which returns a new modified string
+    <string_obj> = <string_var>.Trim()
+    <string_obj> = <string_var>.TrimStart()
+    <string_obj> = <string_var>.TrimEnd()
+
+  string has method to Replace a substring and return a new modified string
+    <string_obj> = <string_var>.Replace(<old_substr>, <new_substr>)
+
+  string has method to create all upper or all lower case
+    <string_obj> = <string_var>.ToUpper()
+    <string_obj> = <string_var>.ToLower()
+
+  string has method to check wether a substring exists, returns a bool value
+    <bool_obj> = <string_var>.Contains(<substring>)
+
+  string has method to check wether string StartsWith or EndsWith specified string, return bool value
+    <bool_obj> = <string_var>.StartsWith(<string_instance>)
+    <bool_obj> = <string_var>.EndsWith(<string_instance>)
+
+  
+  
