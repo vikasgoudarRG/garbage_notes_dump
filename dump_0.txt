@@ -13,6 +13,22 @@
 
 
 // C# first iteration
+methods
+  named arguemnts
+    return_type method_name(type1 name1, type2 name2) {}
+    while calling the method we can do
+      method_name(name1: value1, name2: value2)
+    this has the benefits
+      > clearer to read
+      > argument order can be change up
+    it can be used in case of optional argument
+    ex:
+      return_type method_name(type0 name0, type1 name1 = default_value_1, type2 name2 = default_value_2) {}
+      if we want to only specify value for name2, while keeping name1 as default, we will have to use named arguments because otherwise values 
+      are filled in order of optional arguments
+      method_name(value0, name2: value2)
+    
+
 string
   // general
   string interpolation
