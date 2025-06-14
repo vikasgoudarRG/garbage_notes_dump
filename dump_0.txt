@@ -73,7 +73,7 @@ types
 
     // general
     declaration syntax
-      (Type1 [field_name], Type2, [field_name]) tuple_var = (value1, value2)
+      (Type1 [field_name], Type2 [field_name]) tuple_var = (value1, value2)
       can replace with 
         var tuple_var = (value1, value2) // if field_name isn't going to be mentioned on LHS
       another way to specify the field_name is on RHS
@@ -97,8 +97,8 @@ types
     returning tuples from methods
     (type1 [field_name], type2 [field_name]) method() {}
 
-  record
-    record class or record class
+  record (record class and record struct)
+    record class or record 
       // general
       records are immutable reference types (immutable only positional records, otherwise possible to make mutable properties) similiar classes but follow value based equality operations
   
@@ -111,7 +111,7 @@ types
       ex:
         public record record_var(type1 field_name, type2 field_2) // position records parameters
         {
-          type3 field_name {get; set;} // the fields can be mutable !! only positional paramaters are strictly immutable
+          type3 field_name {get; set;} // the fields can be mutable, only positional paramaters are strictly immutable
           type3 field_name {get; init;}
 
           // any methods you want
