@@ -13,6 +13,17 @@
 
 
 // C# first iteration
+scope
+  unlike some languages like c++, variable with same as in outer scope cannot be declared in inner scope
+  ex:
+    the following is not allowed
+    {
+      int i;
+      {
+        int i;
+      }
+    }
+
 methods
   named arguemnts
     return_type method_name(type1 name1, type2 name2) {}
