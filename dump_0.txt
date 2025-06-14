@@ -27,6 +27,25 @@ methods
       if we want to only specify value for name2, while keeping name1 as default, we will have to use named arguments because otherwise values 
       are filled in order of optional arguments
       method_name(value0, name2: value2)
+
+  pass by reference
+    arguments are by default passed by value, so keyword `ref` can be used
+    method defination
+      return_type method_name(ref type var_name)
+    method call
+      method_name(ref var_name)
+
+  out parameter
+    it is similar to `ref`
+    > method must assign a value to all of the `out` parameters
+    > the compiler treats each `out` parameter as un-initialized, so it's value cannot be accessed in the method until defined
+    ex;
+      method declaration
+        return_type method_name(out type0 param0, out type1 param1) {}
+      method call
+        type0 param0;
+        type1 param1; // can be defined as well doesn't matter
+        method_name(out param0, out param1);
     
 
 string
