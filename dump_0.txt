@@ -8,11 +8,59 @@
   > refernce and value type in c#
   > record struct
   > pattern matching segment of microsoft c# documentation
+  > patterns while writing to streams
 */
 
 
 
 // C# first iteration
+streams and file
+  C# uses streams to work with files
+  stream is link between a program and a data resource
+  the C# library converts requests to use streams into commands it passes on to the operating system, the OS does all of the work
+  
+  defined in System.IO namespace
+
+  Output Stream  
+    StreamWriter
+    creating stream
+      StreamWriter writer = new StreamWriter("File path");
+      // If this process fails for any reason, perhaps your operating system is not able/allowed to write to the file or the name is
+      // invalid, then the action will fail with an appropriate exception.
+      // warning, if file exists it will be overriden
+
+    writing to stream
+      writer.WriteLine("sentence")
+
+    closing stream
+      writer.CLose()
+      forgetting to close can result in
+      > can result in data that was meant to be written not be reflected on the file
+      > other programs may not be able to access that file
+      > keeping open a file takes up some resources, if done in large amounds can eat up significant chunk of resources
+
+  Input Stream
+    StreamReader
+      creating stream
+        StreamReader reader = new StreamReader("file path")
+        // If this process fails for any reason, perhaps your operating system is not able/allowed to read to the file or the name is
+        // invalid, then the action will fail with an appropriate exception.
+
+      reading from a stream
+        reader.ReadLine()
+        // every consequent fetches a successive line
+        // one all the content of the file is exhausted, ReadLine() keeps returning empty string on every call
+
+        // the file object has a property EndOfFile which is set true when end of file reached
+        while (reader.EndOfFile == false) 
+        {
+          // read 
+        }
+
+      closing stream
+        reader.Close()
+        // similiar errors as writer stream might occur if not closed
+
 case
   multiple case labels can use the same case blocks
   case 1:
