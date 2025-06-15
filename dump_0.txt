@@ -62,11 +62,11 @@ classes
 
   when we work with normal methods, if we attempt to do something that is not allowed we can return something that signifies error, but since constructors cant return something, the only work around is to throw Exception
   a good way would be 
-  constructor
+  public class_name(type0 var0, type1 var1)
   {
-    set methods // which return success status
-    set methods 
-    set methods
+    set_methods // which return success status
+    set_methods 
+    set_methods
     throw new Exception ("error message containing everything from previous operations");
   }
 
