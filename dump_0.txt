@@ -13,6 +13,13 @@
 
 
 // C# first iteration
+case
+  multiple case labels can use the same case blocks
+  case 1:
+  case 2:
+    // do something
+    break;
+
 try block
   try
   {
