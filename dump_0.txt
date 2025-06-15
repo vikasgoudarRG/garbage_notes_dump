@@ -107,6 +107,12 @@ inheritence
     {
     }
 
+  constructor in inherited class must call parent constructor because we need to create the parent class as well
+  therefore parent constructor must be called before child constructor
+    class_name_child : base(params)
+    {
+    }
+
 interfaces
   public interface interface_name
   {
