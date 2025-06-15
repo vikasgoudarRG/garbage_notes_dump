@@ -53,6 +53,23 @@ classes
     class_name var0 = new class_name();
   } // garbage collector collects the object instance when the scope ends
 
+  static memebers cannot access instance valriables, they can access static variables
+
+  overloading constructor
+  public classname(param) : this(param) // it is placed before the body of the constructor so that the constructor is called before the body of the overloaded constructor is run
+  {
+  }
+
+  when we work with normal methods, if we attempt to do something that is not allowed we can return something that signifies error, but since constructors cant return something, the only work around is to throw Exception
+  a good way would be 
+  constructor
+  {
+    set methods // which return success status
+    set methods 
+    set methods
+    throw new Exception ("error message containing everything from previous operations");
+  }
+
 enum
   enum Color
   {
