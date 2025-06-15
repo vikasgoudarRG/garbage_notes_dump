@@ -13,6 +13,24 @@
 
 
 // C# first iteration
+array
+  1d
+    type[] arr_name = new type[num]
+
+  rectangular array
+    type[,] arr_name = new type[num_row, num_col]
+    to access a value
+      arr_name[row, col]
+    cannot access entire row array, have to specify element
+
+  initializing array // an be any type of array
+                     // no need to specify size, compiler does it automatically
+    type arr_name[] = new type[] 
+    {
+      // elements .....
+     }
+    
+
 scope
   unlike some languages like c++, variable with same as in outer scope cannot be declared in inner scope
   ex:
