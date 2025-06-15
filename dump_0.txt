@@ -72,19 +72,40 @@ classes
 
 inheritence
   inherits from parent
-  child_class_name : parent_class_name
+  class child_class_name : parent_class_name
   {
     // to override methods inherited from parent class
-    visibility override return_type method_name (params) 
+    visibility override return_type method_name (params) {}
       // for this to work the function declaration in the parent class has to be changed slightly
       // virtual keyword has to be added 
       // ex:
       //   in parent class the declaration   
       //   visibility virtual return_type method_name (params) { // code }
       //   virtual simply means the the method can be overriden, it isn't mandated its a possibility
-    }
+
+    // to use the parent version of the overriden method
+    base.method_name();
+      // this is pretty usefull, because we dont want everything in the parent to be protected, sometimes we want them to be private
+      // however by declaring them as private we cannot access them 
+      // so instead we can have use the methods in the parent class that access these private fields
+
+    // overriding means that we can access both the parent and child version
+    // if we implement it without specifying the override keyword it still works, because it considered as a new defination for that method 
+    // the compiler will give a warning tho, that can be fixed by defining it by adding keyword `new`
+    //  ex:
+    //     new return_type method_name(params) { // code }
   }
-  
+
+  sealed
+    can be used to prevent class from being used a parent class for future inheritance
+    sealed class class_name0 : class_name1, interfaces // class_name0 cannot be used as a parent class for inheritance later on 
+    {
+    }
+
+    it can also be used with `override` to prevent the method from being overriden in future inherited classes
+    sealed override return_type method_name (params)
+    {
+    }
 
 interfaces
   public interface interface_name
@@ -92,7 +113,7 @@ interfaces
     return_type method_name(param);
   }
   // when a class implements an Interface it must implement every single method declared in the Interface
-  class_name : interface_name
+  class class_name : interface_name
   {
     // must define each method declared in the interface
   }
