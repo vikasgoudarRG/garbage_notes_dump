@@ -13,6 +13,21 @@
 
 
 // C# first iteration
+try block
+  try
+  {
+  }
+  catch (Exception e)
+  {
+    // e.Message
+  }
+finally
+{
+}
+
+throwing error
+  throw new Exception("message")
+
 array
   1d
     type[] arr_name = new type[num]
