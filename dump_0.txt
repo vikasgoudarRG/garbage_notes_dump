@@ -14,6 +14,55 @@
 
 
 // C# first iteration
+structs
+  structs are treated as value types
+  classes are treated as reference types
+
+  struct struct_name
+  {
+    // fields
+  };
+  struct_name struct_obj; // creates a struct instance
+
+  the dot operator is used to access memebrs of a struct instance
+
+classes
+  structs are treated as value types
+  classes are treated as reference types
+
+  class class_name
+  {
+    // 
+  }
+
+  class_name var; // this does not create an object, it creates a reference that can be used to refer to instances of the class
+                  // thus if you try to do var.something now it won't work because it doesn't refer to anything yet
+  // so we do
+  class_name var = new class_name();
+
+  // since these are reference multiple references can refer to the same object
+  class_name var_0;
+  calss_name var_1;
+  var_0 = new class_name();
+  var_1 = var_0; // refer to the same object instance
+
+  // if you loose reference to an object instance, i.e you can't access it anymore it is collected by the garbage collector
+  class_name var0 = new class_name();
+  var_0 = new class_name();  // the garbage collector will collect the previous object, since no reference to it exists
+  {
+    class_name var0 = new class_name();
+  } // garbage collector collects the object instance when the scope ends
+
+enum
+  enum Color
+  {
+    Red,
+    Yellow,
+    Green
+  };
+  Color c;
+  c = Color.Red;
+
 streams and file
   C# uses streams to work with files
   stream is link between a program and a data resource
