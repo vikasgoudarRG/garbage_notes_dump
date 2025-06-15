@@ -70,6 +70,52 @@ classes
     throw new Exception ("error message containing everything from previous operations");
   }
 
+inheritence
+  inherits from parent
+  child_class_name : parent_class_name
+  {
+    // to override methods inherited from parent class
+    visibility override return_type method_name (params) 
+      // for this to work the function declaration in the parent class has to be changed slightly
+      // virtual keyword has to be added 
+      // ex:
+      //   in parent class the declaration   
+      //   visibility virtual return_type method_name (params) { // code }
+      //   virtual simply means the the method can be overriden, it isn't mandated its a possibility
+    }
+  }
+  
+
+interfaces
+  public interface interface_name
+  {
+    return_type method_name(param);
+  }
+  // when a class implements an Interface it must implement every single method declared in the Interface
+  class_name : interface_name
+  {
+    // must define each method declared in the interface
+  }
+
+  references to interfaces
+  we can reference objects in terms of the interfaes that they implements rather than their particular type
+  ex:
+    Interface_name var = new class_name(); // where class_name implements the interface_name
+    var.methods()
+    var.properties;   
+  > helps in loose coupling, can easily refer to different classes that implement the same interface in different ways, which helps in integration and testing and so on..
+  we can use this property to create an array of different classes that implement the same interface
+  ex:
+    interface_name[] arr_name = new interface_name[num];
+    arr[0] = new class_name0(); // that implements interface_name
+    arr[1] = new class_name1(); // that implements interface_name
+
+  we can implement multiple interfaces
+  class class_name : interface_name0, interface_name1
+  {
+    // code
+  }
+
 enum
   enum Color
   {
