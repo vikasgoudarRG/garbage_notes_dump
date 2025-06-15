@@ -154,6 +154,10 @@ string
     ex:
       $"hello {friend_var}"
 
+  verbatim strings
+    to decalre string literals with no escape chars or anything
+    @"this/ is/a/string literal"
+
   methods that modify strings, return a new string, they dont make changes to the original string
 
   // properties
