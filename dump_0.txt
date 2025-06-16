@@ -5,10 +5,9 @@
 // doubts
 /*
   > what is type safe?, what does it mean by weakly typed and strong typed
-  > refernce and value type in c#
   > record struct
-  > pattern matching segment of microsoft c# documentation
   > patterns while writing to streams
+  > read about StringBuilder
 */
 
 
@@ -339,10 +338,44 @@ methods
         type0 param0;
         type1 param1; // can be defined as well doesn't matter
         method_name(out param0, out param1);
-    
+
+character
+  static methods
+    char.IsDigit(char_var) // 0-9
+    char.IsLetter(char_var) // a-z || A-Z
+    char.IsLetterOrDigit(char_var)
+    char.IsLower(char_var)
+    char.IsUpper(char_var)
+    char.IsPunctuation(char_var)
+    char.IsWhiteSpace(char_var) 
 
 string
-  // general
+  string's behaviour is a mix of value type and reference types ngl
+  when you create a string in this way
+    string str_var = "string literal"
+  you create an instance of the string class which is a reference to the string literal
+  string string_var0 = "hello world";
+  string string_var1 = string_var0;
+  both refer to the same string literal
+
+  string string_var0 = "hello"
+  string string_var1 = "hello" // both refer to the same string literal
+
+  string string_var0 = new string("hello")
+  string string_var1 = new string("hello") // both do not refer to the same string, since we have allocated space for this string 
+
+  strings are immutable in c#, so any changes to a string actually creates a new string and returns it, 
+  so "modifying" string_var1 won't cause changes to string_var0 because it just creates a new string and refers to that instead
+
+  it also shows behaviours of a value type
+  string_var0 == string_var1 // compares the value of the string of the strings going over it char by char
+                             // i.e == is overriden for strings to perform value based comparison rather than reference based comparison
+                             // whereas a "normal" reference type would have checked the reference rather than the value
+
+  chars in a string can be accessed via indices
+  char char_var = string_var[index];
+  but since strings are immutable we cannot change their value by indexing
+
   string interpolation
     if you add `$` before opening quotes of a string, you can add variables inside the string using curly braces
     ex:
@@ -377,6 +410,17 @@ string
   string has method to check wether string StartsWith or EndsWith specified string, return bool value
     bool_obj = string_var.StartsWith(string_instance)
     bool_obj = string_var.EndsWith(string_instance)
+
+  Substring() method
+    Substring(index, [length])
+      index -> starting index of substring
+      length -> optional paramater that specidies length of substring to be taken, if not specified reads till end of string
+      // dont request substring that goes beyond the string, that will thorw an Exception
+
+StringBuilder
+  found in System.Text namespace
+  if you want to be able to modify strings
+  
 
 numbers
   // general
