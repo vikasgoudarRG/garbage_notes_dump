@@ -2,13 +2,14 @@
 1. C# first iteration
 
 
-// doubts
+// to do
 /*
   > what is type safe?, what does it mean by weakly typed and strong typed
   > record struct
   > patterns while writing to streams
   > read about StringBuilder
   > expand more on properties
+  > go more in depth on the topics written
 */
 
 
