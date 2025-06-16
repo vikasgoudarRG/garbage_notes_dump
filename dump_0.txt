@@ -118,6 +118,7 @@ inheritence
     methods that are marked as abstract in an abstract class must be defined in derived classes 
     // note: not all methods are compulsed to be abstract
     // that is the difference between interfaces and abstract classes, that abstract classes can have some abstract methods and some normal methods
+    // abstract classes can have fields as well, constructors as well
     abstract class class_name
     {
       abstract return_type method_name() {} // not defined
@@ -158,8 +159,44 @@ interfaces
     // code
   }
 
-Object class
-  in C#
+object class
+  in C#, every classes inherently extends the Object class
+  class class_0 {} 
+    is
+  class class_0 : object {}
+
+  don't confuse that this allows multiple inheritance, by thinking that
+  class class_0 : class_1
+    is
+  class_0 : class_1, object
+  WRONG, the order is 
+    object <- class_1 <- class_0
+
+  thus an instance of the object class can refer to any class instance, and every instance have some similiar properties that are implemented in the object class
+  ex:
+    ToString
+      returns a string description of the type of the object
+      ex:
+        object obj = new object();
+        Console.WriteLine(obj); // gives System.Object
+
+      this method has also been declared as virtual, so that means we can override this method in our classes, to get the behaviour desired
+      ex:
+        public overridestring ToString()
+        {
+          return "hello world!";
+        }
+        thus when you use Console.WriteLine() on this object, it will print "hello world"
+
+overriding Equals // another method could work as well, but most c# libraries use .Equals()
+  class class_name 
+  {
+    public override bool Equals(object obj) // parameter is object type
+    {
+      class_name obj_class = (class_name) obj // the type has to cast as a class_name
+      // do operation
+    }
+  }
 
 enum
   enum Color
