@@ -8,6 +8,7 @@
   > record struct
   > patterns while writing to streams
   > read about StringBuilder
+  > expand more on properties
 */
 
 
@@ -196,6 +197,24 @@ overriding Equals // another method could work as well, but most c# libraries us
       // do operation
     }
   }
+
+properties
+  if the set method fails the condition
+  ex:
+    private _propertyName;
+    public PropertyName
+    {
+      get;
+      set
+      {
+        if (value > CONSTANT_VAR)
+        {
+          _propertyName = value;
+        }
+    }
+  now here if the set method fails, the property wont be set, it will silently move on. which can be a huge problem, one work around is to throw an exception 
+  in the code, or rather if you wanna check for such cases better yet just create the tradition get and set methods and return a boolean value or some error code
+  
 
 enum
   enum Color
