@@ -113,6 +113,21 @@ inheritence
     {
     }
 
+  abstract classes
+    we cannot make objects of abstract classes
+    methods that are marked as abstract in an abstract class must be defined in derived classes 
+    // note: not all methods are compulsed to be abstract
+    // that is the difference between interfaces and abstract classes, that abstract classes can have some abstract methods and some normal methods
+    abstract class class_name
+    {
+      abstract return_type method_name() {} // not defined
+      return_type method_name() 
+      {
+        // code
+      }
+    }
+    we must use override while defining the abstract method in the derived class
+
 interfaces
   public interface interface_name
   {
@@ -142,6 +157,9 @@ interfaces
   {
     // code
   }
+
+Object class
+  in C#
 
 enum
   enum Color
