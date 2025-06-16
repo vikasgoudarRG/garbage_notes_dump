@@ -15,6 +15,11 @@
 
 
 // C# first iteration
+sometimes like strings are non-nullable so
+  string? makes it nullable
+  to avoid error one can also do
+  string var = null! // this means that we tell the compiler that at runtime access of this variable we will have defined it we promise so relax with the warnings
+
 structs
   structs are treated as value types
   classes are treated as reference types
