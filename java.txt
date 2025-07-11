@@ -1,4 +1,4 @@
-# package
+package
     packages must match folder structure
     ex  
         package com.example.ratelimiter; // creating package
@@ -23,10 +23,67 @@
                 ├── java/            ← Unit/integration test code
                 └── resources/       ← Test configs or data files
 
-# pom.xml
+pom.xml
     Project Object Model
     Configuration file used by Maven
 
-# JAR
+JAR
     Java Archive
+
+nested class
+    example
+        public class Outer {
+            class Nested { // can access outer class instance members
+                void sayHello() {
+                    System.out.println("Hello from static nested class");
+                }
+            }
+        }
+
+        Outer outer = new Outer();
+        Outer.Inner inner = outer.new Inner();  // Needs outer instance
+        inner.showMessage();
+        
+
+static class
+    In Java, a static class is a nested class (defined inside another class) that is marked with the static keyword.
+    You cannot create a top-level static class in Java — only nested static classes are allowed.
+
+    example
+        public class Outer {
+            static class StaticNested { // can access only static members of outer class
+                void sayHello() {
+                    System.out.println("Hello from static nested class");
+                }
+            }
+        }
+
+        Outer.StaticNested nested = new Outer.StaticNested(); // doesn't need instance of outer class to be created
+        nested.sayHello();
+
+    A static nested class does not need an instance of the outer class to be created.
+    It can only access static members of the outer class.
+
+
+StringBuilder
+    strings are immutable in java
+    so when you concatenate like this
+        str_obj_1 += str_obj_2
+    it actually creates a new string object, which takes some resources
+
+    stringbuilder, allows to modify the string
+
+    // avoid this
+    String answer = firstPart + "." + secondPart; 
+
+    // instead do
+    String answer = new StringBuilder(answer).append(secondPart).toString();
+
+MessageDigest
+    Java Library for hash functions like 
+        SHA 256
+        SHA 1
     
+    MessageDigest md = MessageDigest.getInstance("SHA-256");
+    byte[] hash = md.digest("hello123".getBytes());
+

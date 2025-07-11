@@ -129,3 +129,15 @@ Session, Cookie, Token
             To allow a third-party service (like a payment gateway) to trust that token, 
             you either share a secret key (if using symmetric signing) or a public key (if using asymmetric signing like RSA)
             Thus the third party can work without needing to manage sessions or make a call back to your server.
+
+        So Basically 
+            Session -> server-side statefull auth
+            token   -> server-side stateless auth
+
+        Access Token
+            Access Token is a resource credential required when accessing resource interfaces (APIs).
+
+            The composition of a token is not fixed. A simple token composition includes:
+                uid (user’s unique identity identifier);
+                time (timestamp of the current time);
+                sign (signature, a hexadecimal string of a certain length compressed by a hash algorithm from the first few digits of the token).

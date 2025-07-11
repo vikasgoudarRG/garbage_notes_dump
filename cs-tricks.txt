@@ -1,0 +1,7 @@
+signed to unsigned
+    suppose we have a signed byte
+    -1 -> 1111 1111
+    and we want to convert this into unsigned
+    we can do
+    -1 & (0xff)
+    this will give -> 255
