@@ -1,0 +1,131 @@
+Session, Cookie, Token
+    The HTTP protocol is a “stateless protocol”, that is, every time the server receives a request from the client, it is a completely new request, 
+    and the server does not know the historical request records of the client. 
+    
+    The main purpose of Session and Cookie is to make up for the stateless nature of HTTP.
+
+    A session is a way for the server to remember a user across multiple HTTP requests.
+    Since HTTP is stateless, the server creates a session object (in memory) when a client logs in or interacts
+    A Session ID is sent to the client (via a cookie), and on every future request, the client sends this ID back. The server uses it to find the session data.
+    when the server receives the request for the first time, it opens up a Session space (creates a Session object), and at the same time generates a sessionId, 
+    and sends a response to the client requesting to set a Cookie through the Set-Cookie: JSESSIONID=XXX command in the response header.
+
+    After the client receives the response, it sets a Cookie information of JSESSIONID=XXX on the local client. 
+    The expiration time of this Cookie is the end of the browser session.
+
+                (1) HTTP Request 
+      [Client] ------------------> [Server]
+
+                (2) HTTP Response + Set-Cookie
+               <------------------
+
+                (3) HTTP Request + Cookie
+               ------------------>
+                
+                (4) HTTP Response
+               <------------------
+
+    Next time when the client sends a request to the same website each time, the request header will carry this Cookie information (including sessionId). 
+    Then, by reading the Cookie information in the request header, the server obtains the value named JSESSIONID and gets the sessionId of this request.
+
+    Session is stored on the server side, and sessionId will be stored in the Cookie of the client.
+
+    What is Stored Inside a Session?
+        A session is like a temporary, server-side memory of a user. When a user logs in, the server creates a session object to store information about that user.
+
+    Disadvantages of Session
+        However, the Session mechanism has a disadvantage. If your server does load balancing and stores the Session on server A during the first request. 
+        Suppose the traffic to server A surges within a period of time and requests will be forwarded to server B for access. 
+        But server B does not store the Session of server A, which will lead to the invalidation of the Session.
+
+    Cookies in the HTTP protocol include Web Cookie and browser Cookie.
+    Web Cookie and Browser Cookie generally mean the same thing,
+    Web Cookie is data a website sends, Browser Cookie is the same data stored on the client (Browser) side
+
+    The Cookie sent by the server to the browser will be stored by the browser and sent to the server together with the next request. 
+    Usually, it is used to determine whether two requests come from the same browser, such as when a user remains logged in.
+
+    Cookies are mainly used for the following three purposes:
+        1. Session management
+            Cooperate with the server and identify user sessions by storing sessionid.
+
+        2. Store user information
+            > Login status: Remember whether the user is logged in. No need to log in again on the next visit.
+            > Preference settings: Such as language, theme, etc. Automatically apply on the next visit.
+
+        3. Track user behavior
+            > Browsing history: Record visited pages for easy recommendation and navigation.
+            > Analyze behavior: Understand user habits for optimization and precision marketing.
+
+    Creating Cookies
+        When receiving an HTTP request from a client, the server can send a response with the Set-Cookie header. 
+        Cookies are usually stored by the browser and then the Cookie is sent to the server along with the HTTP header.
+
+    Set-Cookie and Cookie headers
+        The Set-Cookie HTTP response header sends cookies from the server to the user agent. Here is an example of sending a Cookie.
+
+        This header tells the client to store cookies.
+        Now, with each new request to the server, the browser will send all previously stored cookies back to the server using the Cookie header.
+
+    There are two types of cookies. One is Session Cookies, and the other is Persistent Cookies. 
+    If a cookie does not contain an expiration date, it is regarded as a session cookie. Session cookies are stored in memory and are never written to disk. 
+    When the browser is closed, the cookie will be permanently lost thereafter. If a cookie contains an “expiration period”, it is regarded as a persistent cookie. 
+    At the specified expiration date, the cookie will be deleted from the disk.
+
+    Secure and HttpOnly flags of cookies
+        Secure Flag
+            > Ensures that the cookie is sent only over HTTPS (encrypted).
+        HttpOnly Flag
+            > Blocks JavaScript (or client-side scripts) from reading the cookie.
+    
+    Scope of cookies
+        The Domain and Path identifiers define the scope of cookies: that is, which URLs cookies should be sent to.
+
+        The Domain identifier specifies which hosts can accept cookies. If not specified, the current host (excluding subdomains) is the default. 
+        The original host (also called the origin host) is the exact domain name of the website that set the cookie — the one the user is currently visiting.
+        If Domain is specified, subdomains are generally included.
+        For example, if Domain=mozilla.org is set, cookies are also included in subdomains (such as developer.mozilla.org).
+
+        For example, if Path=/test is set, the following addresses will all match:
+
+        /test
+        /test/user/
+        /test/user/login
+
+    Token
+        Why we need Token when we already have Session
+            Limitations of Session
+                > Too Many Users = Too Much Memory
+                    Each user’s session takes up server memory.
+                    More users → more memory usage → server becomes overloaded.
+                > Multiple Servers = Session Sync Problems
+                    load balancing (multiple servers) to handle high traffic causes sync Problems, because Session data is stored on just one server.
+                    If a user hits a different server, it won’t have their session → user gets logged out or errors, or a mechanism should be put int place
+                    for sessions to be transferred
+                > Different Devices = New Login
+                    Session is usually tied to one browser on one device.
+                    If the user logs in from their phone, then later from a tablet, they need to log in again.
+        In session-based authentication, the server stores the client's identity (like user ID or role) along with any additional data needed during the user's visit
+        such as shopping cart items, draft forms, or temporary preferences. This information is kept in server-side memory or a store like Redis, 
+        and the client holds only a session ID (usually in a cookie) that the server uses to look up the full session.
+
+        In contrast, token-based authentication (typically using JWTs) stores the user's identity directly inside a self-contained token. 
+        This token is given to the client after login and sent with every request. The server uses it to verify the user's identity, 
+        but does not store any session data. However, the “extra stuff” — like cart data, preferences, or business state — still lives on the server, 
+        usually in a database or cache, and is fetched when needed using the user ID from the token. 
+        In essence, token-based auth offloads the identity tracking to the client, while all other user-related data still remains server-side.
+
+        Token is like a magic pass. After a user logs in successfully, 
+        the server will generate a Token containing the user’s identity information and return this Token to the user. The user can save this Token on their own device
+        Suppose a mall 
+        When users browse products, add to the shopping cart or check out in the mall, they only need to carry this Token in each request. 
+        After the server receives the request, it can determine the user’s identity and permissions by verifying the validity of the Token, 
+        without having to look up and manage complex Session information.
+        no matter how many users are online at the same time in your mall, the server does not need to save a large amount of Session information for each user. 
+        It only needs to verify the Token for each request, greatly reducing the burden on the server.
+
+        Token can be easily integrated with third-party services
+            When your server issues a token (usually a JWT) after user login, it digitally signs the token to ensure its authenticity. 
+            To allow a third-party service (like a payment gateway) to trust that token, 
+            you either share a secret key (if using symmetric signing) or a public key (if using asymmetric signing like RSA)
+            Thus the third party can work without needing to manage sessions or make a call back to your server.

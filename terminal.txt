@@ -1,0 +1,2 @@
+creating folders
+    mkdir -p <path> // creates parent directories if not exists

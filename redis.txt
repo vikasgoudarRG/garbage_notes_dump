@@ -1,0 +1,12 @@
+redis (REmote Dictionary Service)
+    it is an in-memory data structure, which is commonly used as 
+        > database
+        > cache
+        > message broker, via pub/sub and streams
+    
+    stores data in memory (RAM) thus has fast read/writes, also supports optional disk persistence
+
+    supports data types like 
+        > string, list, hash, set
+        > sorted sets, bitmaps, hyperloglogs, streams
+        > pub/sub, geo, json (Redis JSON)

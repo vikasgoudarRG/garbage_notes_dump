@@ -1,0 +1,32 @@
+# package
+    packages must match folder structure
+    ex  
+        package com.example.ratelimiter; // creating package
+        folder structure would be 
+        com/
+            example/
+                ratelimiter/
+                    MyApp.java
+    
+    import com.example.ratelimiter; // using package
+
+    java follows a reverse domain naming convention for packages
+
+    Maven Standard Directory Layout
+        project-root/
+        ├── pom.xml                  ← Project config (dependencies, build info)
+        └── src/
+            ├── main/
+            │   ├── java/            ← Your application source code
+            │   └── resources/       ← Configuration files (e.g. application.yml)
+            └── test/
+                ├── java/            ← Unit/integration test code
+                └── resources/       ← Test configs or data files
+
+# pom.xml
+    Project Object Model
+    Configuration file used by Maven
+
+# JAR
+    Java Archive
+    
