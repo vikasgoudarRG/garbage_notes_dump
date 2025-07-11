@@ -141,3 +141,27 @@ Session, Cookie, Token
                 uid (user’s unique identity identifier);
                 time (timestamp of the current time);
                 sign (signature, a hexadecimal string of a certain length compressed by a hash algorithm from the first few digits of the token).
+            
+            the token needs to be carried in every subsequent request, so the token needs to be placed in the HTTP Header. 
+            User authentication based on token is a server-side stateless authentication method, and the server does not need to store token data. 
+            The calculation time for parsing the token is exchanged for the storage space of the session
+
+        Refresh Token
+            Access tokens usually expire quickly (for security).
+            A refresh token is a special token used to get a new access token without asking the user to log in again.
+            Without a refresh token, the user must re-enter their credentials every time the access token expires
+            With a refresh token, the client can silently get a new access token.
+
+            How it works:
+                User logs in -> Server issues:
+                    Access token (short-lived)
+                    Refresh token (longer-lived)
+
+                When the access token expires:
+                    Client sends the refresh token to the server.
+                    Server verifies it and issues a new access token.
+            
+            When the refresh token expires, the client must log in again
+
+            refresh tokens are also stored on server side so that they aren't abused and the server has a stateful knowledge of how they are being used
+            and can if needed revoke, track it for ex.
