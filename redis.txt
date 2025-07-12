@@ -5,6 +5,19 @@ redis (REmote Dictionary Service)
         strictly speaking, the Redis Server is multi-threaded, but its entire request processing flow is handled by a single thread. 
         We must clearly understand this point and not simply think that the entire Redis Server is single-threaded
 
+        Redis doesn’t use multiple threads because most of its operations are not CPU-heavy
+        Redis operations are usually fast memory reads/writes or simple network I/O.
+        The real bottlenecks are:
+            > Memory (not enough RAM)
+            > Network (slow or limited bandwidth)
+
+        Multithreading can slow things down if the overhead of managing threads > actual work.
+            Redis commands (e.g. GET, SET, INCR) take microseconds.
+            Multithreading introduces race conditions, locks, and shared memory issues.
+            These problems slow things down because:
+                > You now need mutexes/locks to prevent data corruption.
+                > Locks cause waiting, which kills the performance benefits.
+
         why its still fast with single thread for request processing
             > pure memory operation
                 Redis is an in-memory database. Its data is all stored in memory, which means that our reading and writing of data are all completed in memory. 
@@ -69,6 +82,33 @@ redis (REmote Dictionary Service)
                         Its core idea is that through a system call (such as select, poll, epoll, etc.), 
                         the program can simultaneously block and wait for the ready state of multiple I/O operations. 
                         When one or more descriptors are ready, the system call returns and tells the program which descriptors are ready for I/O operations. 
-                        hen the program can perform corresponding I/O processing for these ready descriptors.
+                        then the program can perform corresponding I/O processing for these ready descriptors.
                 
+                        Because of this, Redis can listen to requests from multiple Sockets in a single thread. When any Socket is readable/writable, 
+                        Redis reads the client request, operates the corresponding data in memory, and then writes it back to the Socket.
+
+        As mentioned before, 
+        Redis Server is multi threaded
+            the request processing flow is handled by a single thread
+            
+            Apart from the request processing flow being handled by a single thread, there are other worker threads inside Redis that execute in the background.
+
+            They are responsible for asynchronously executing certain relatively time-consuming tasks. 
+            For example, AOF flushing every second and AOF file rewriting are completed in another thread.
+            AOF Flushing (every second)
+                Redis buffers write commands in memory.
+                Every second, it writes (flushes) these to the Append-Only File (AOF) on disk.
+                This writing to disk is slow, so it's done in a separate thread.
+
+            AOF File Rewriting
+                Over time, the AOF file gets large.
+                Redis rewrites/compacts it to keep it small and efficient.
+                This rewriting is a heavy task, so it’s also done asynchronously in another thread.
+            
+            When deleting large keys, releasing memory is often time-consuming. 
+            Therefore, Redis provides an asynchronous way to release memory. 
+            Putting these time-consuming operations in another thread for asynchronous processing does not affect the execution of the main thread and improves performance.
+
+
+
             
