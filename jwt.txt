@@ -1,0 +1,161 @@
+JSON Web Token (JWT)
+
+open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. 
+
+his information can be verified and trusted because it is digitally signed. 
+JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.
+
+JWTs can be encrypted to also provide secrecy between parties
+
+Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. 
+When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.
+
+some scenarios where JSON Web Tokens are useful:
+    Authorization
+        This is the most common scenario for using JWT. Once the user is logged in, each subsequent request will include the JWT, 
+        allowing the user to access routes, services, and resources that are permitted with that token
+
+        For example, after a user logs in, the server issues a JWT containing user identity and roles. 
+        The client stores this token and sends it with future requests (e.g. in an Authorization: Bearer <token> header). 
+        The server verifies the token and grants access if valid. 
+        This avoids server-side session storage, making the system portable and scalable
+
+    Information Exchange
+        JSON Web Tokens are a good way of securely transmitting information between parties. 
+        Because JWTs can be signed—for example, using public/private key pairs—you can be sure the senders are who they say they are. 
+        Additionally, as the signature is calculated using the header and the payload, you can also verify that the content hasn't been tampered with.
+
+JSON Web Token structure
+    In its compact form, JSON Web Tokens consist of three parts separated by dots (.), which are:
+        Header
+        Payload
+        Signature
+
+    Therefore, a JWT typically looks like the following:
+        [Base64URL(header)].[Base64URL(payload)].[Base64URL(signature)]
+            Base64 vs Base64Url
+                Base64: A way to encode binary data into ASCII characters.
+                    Normal Base64 uses: A–Z, a–z, 0–9, +, /, =
+                Base64Url: A URL-safe version of Base64
+                    + becomes -
+                    / becomes _
+                    = is removed
+
+            Base64Utr encoding looks like
+                exmample
+                    Let’s take a simple JSON:
+                        {
+                        "sub": "1234567890",
+                        "name": "John Doe",
+                        "admin": true
+                        }
+
+                    Step 1: Convert to a JSON string
+                        {"sub":"1234567890","name":"John Doe","admin":true}
+
+                    Step 2: Convert string to bytes (UTF-8)
+
+                    Step 3: Group into 6-bit chunks
+                        Because Base64 uses 64 different characters — and to represent 64 values, we need exactly 6 bits:
+
+                    Step 4: Map to Base64 alphabet
+                        Index → Char
+                        0–25  → A–Z  
+                        26–51 → a–z  
+                        52–61 → 0–9  
+                        62    → +  
+                        63    → /
+
+                    Step 5: Make it URL-safe (Base64Url)
+                        
+
+    Header
+        The header typically consists of two parts: the type of the token, which is JWT, and the signing algorithm being used, such as HMAC SHA256 or RSA.
+        example
+            {
+                "alg": "HS256",
+                "typ": "JWT"
+            }
+    
+    Payload
+        The second part of the token is the payload, which contains the claims. Claims are statements about an entity (typically, the user) and additional data. 
+        There are three types of claims: registered, public, and private claims.
+
+        Registered claims:
+            These are a set of predefined claims which are not mandatory but recommended, to provide a set of useful, interoperable claims.
+
+        Public claims:
+            These can be defined at will by those using JWTs, Intended to be used publicly and universally
+
+            should be defined in a way that avoids name collisions across different JWT producers, 
+            so must be egistered in the IANA JWT Claim Names Registry (or use a URI/namespace) to avoid collision
+
+        Private claims:
+            These are the custom claims created to share information between parties that agree on using them and are neither registered or public claims.
+
+        example
+            {
+            "sub": "1234567890",
+            "name": "John Doe",
+            "admin": true
+            }
+
+        The payload is then Base64Url encoded to form the second part of the JSON Web Token.
+
+    Signature
+        To create the signature part you have to take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that.
+        For example, if you want to use the HMAC SHA256 algorithm, the signature will be created in the following way:
+            HMACSHA256(
+                base64UrlEncode(header) + "." +
+                base64UrlEncode(payload),
+                secret
+            )
+        For RSA (e.g. RS256) or ECDSA (ES256), the token is signed with a private key and later verified with the corresponding public key
+        The server’s signing key must be kept secret.
+
+        The signature is used to verify the message wasn't changed along the way, 
+        and, in the case of tokens signed with a private key, it can also verify that the sender of the JWT is who it says it is.
+
+Difference Between Validating and Verifying a JWT
+    JWT validation 
+        generally refers to checking the structure, format, and content of the JWT:
+            Structure: 
+                Ensuring the token has the standard three parts (header, payload, signature) separated by dots.
+
+            Format: 
+                Verifying that each part is correctly encoded (Base64URL) and that the payload contains expected claims.
+
+            Content: 
+                Checking if the claims within the payload are correct, 
+                such as expiration time (exp), issued at (iat), not before (nbf), among others, to ensure the token isn't expired, isn't used before its time, etc.
+
+    JWT verification
+        involves confirming the authenticity and integrity of the token:
+        Signature Verification:
+            This is the primary aspect of verification where the signature part of the JWT is checked against the header and payload. 
+            This is done using the algorithm specified in the header (like HMAC, RSA, or ECDSA) with a secret key or public key. 
+            If the signature doesn't match what's expected, the token might have been tampered with or is not from a trusted source.
+
+        Issuer Verification
+            Checking if the iss claim matches an expected issuer.
+
+        Audience Check: 
+            Ensuring the aud claim matches the expected audience.
+
+Difference Between Decoding and Encoding a JWT
+    Encoding a JWT involves transforming the header and payload into a compact, URL-safe format. The
+    header, which states the signing algorithm and token type, and the payload, which includes claims like
+    subject, expiration, and issue time, are both converted to JSON then Base64URL encoded. These
+    encoded parts are then concatenated with a dot, after which a signature is generated using the
+    algorithm specified in the header with a secret or private key. This signature is also Base64URL
+    encoded, resulting in the final JWT string that represents the token in a format suitable for transmission
+    or storage.
+
+    Decoding a JWT reverses this process by converting the Base64URL encoded header and payload
+    back into JSON, allowing anyone to read these parts without needing a key. However, "decoding" in
+    this context often extends to include verification of the token's signature. This verification step involves
+    re-signing the decoded header and payload with the same algorithm and key used initially, then
+    comparing this new signature with the one included in the JWT. If they match, it confirms the token's
+    integrity and authenticity, ensuring it hasn't been tampered with since issuance.
+
+    

@@ -122,7 +122,7 @@ redis (REmote Dictionary Service)
                 obtaining too much data at one time
                 a large number of keys expiring
 
-How are the five common Redis data types implemented?
+How are the five common Redis data types implemented internally?
     1. Internal Implementation of String Type
         The underlying data structure implementation of the String type is mainly SDS (Simple Dynamic String)
         SDS is not quite the same as the C string
@@ -236,10 +236,35 @@ How are the five common Redis data types implemented?
 
         If the elements in the set do not meet the above conditions, then Redis uses hash table as the underlying data structure of the Set type.
     
-    5. 
+    5. Internal Implementation of ZSet Type (Rank based Sorted Set)    
+        The underlying data structure of the ZSet type is implemented by ziplist or skip list:
+        In Redis 7.0, the ziplist data structure has been deprecated and replaced by the listpack data structure to implement it.
+       
+        If the number of elements of the ordered set is less than 128 and the value of each element is less than 64 bytes, 
+        Redis will use ziplist as the underlying data structure of the ZSet type;
 
+        If the elements of the ordered set do not meet the above conditions, 
+        Redis will use skip list as the underlying data structure of the ZSet type.
+
+        ill be honest, im not going to pretend i know how skip-set works
+    
+String Type
+    It is the most basic key-value structure, where the key is the unique identifier and the value is the specific value.
+    
+    "String" are actually are really just byte arrays — like this:
+        [ 0x31, 0x32, 0x33 ]
+
+    stored internally as int and SDS (Simple Dynamic String) [byte array thingy].
+
+    You can interpret those bytes however you want:
+        As text ("123")
+        As a number (123)
+        As binary data (e.g., part of a JPEG file)
+        Redis itself doesn’t care what the value means - until you use a command that interprets it a certain way.
+
+    Regarding the encoding convenience, there are 3 kinds of internal encoding (encoding) of the string object: int, raw, and embstr, 
+    and the relationship is as  
         
-
 
 
 
