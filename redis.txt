@@ -105,9 +105,22 @@ redis (REmote Dictionary Service)
                 Redis rewrites/compacts it to keep it small and efficient.
                 This rewriting is a heavy task, so it’s also done asynchronously in another thread.
             
-            When deleting large keys, releasing memory is often time-consuming. 
-            Therefore, Redis provides an asynchronous way to release memory. 
-            Putting these time-consuming operations in another thread for asynchronous processing does not affect the execution of the main thread and improves performance.
+            Deleting large keys can be time-consuming because freeing up memory takes effort. 
+            By default, this process happens in Redis's main thread, which can block other operations and hurt performance. 
+            However, Redis offers an asynchronous memory release mechanism. If properly configured and used with specific commands (like UNLINK), 
+            Redis can offload these tasks to background threads—allowing the main thread to stay responsive and improving overall performance.
+
+
+        Single threading has disadvantages as well
+            The biggest disadvantage of single-threaded processing is that if a previous request takes a long time to operate, 
+            then the entire Redis will be blocked and other requests cannot enter until this time-consuming operation is completed and returned. 
+            Only then can other requests be processed.
+
+            Therefore, when using Redis, we must avoid very time-consuming operations.
+            For example, 
+                obtaining data in a way with too high time complexity
+                obtaining too much data at one time
+                a large number of keys expiring
 
 
 
