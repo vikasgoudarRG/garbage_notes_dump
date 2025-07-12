@@ -1,0 +1,11 @@
+socket
+    Endpoint for communication over a network.
+    Used in client-server communication
+    Each client gets a dedicated socket.
+
+port 
+    Logical number (0–65535) identifying a service on a machine.
+    Example: 80 = HTTP, 443 = HTTPS, 6379 = Redis.
+
+pipes
+    Used for communication between processes on the same machine.

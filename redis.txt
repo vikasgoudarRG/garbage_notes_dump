@@ -1,12 +1,70 @@
 redis (REmote Dictionary Service)
-    it is an in-memory data structure, which is commonly used as 
-        > database
-        > cache
-        > message broker, via pub/sub and streams
+    it is a high-performance key-value database that runs in memory.
     
-    stores data in memory (RAM) thus has fast read/writes, also supports optional disk persistence
+    threading architecture
+        strictly speaking, the Redis Server is multi-threaded, but its entire request processing flow is handled by a single thread. 
+        We must clearly understand this point and not simply think that the entire Redis Server is single-threaded
 
-    supports data types like 
-        > string, list, hash, set
-        > sorted sets, bitmaps, hyperloglogs, streams
-        > pub/sub, geo, json (Redis JSON)
+        why its still fast with single thread for request processing
+            > pure memory operation
+                Redis is an in-memory database. Its data is all stored in memory, which means that our reading and writing of data are all completed in memory. 
+                This speed is very fast.
+
+                Redis is also a key-value in-memory database. It internally constructs a hash table. When accessing according to a specified KEY, 
+                the corresponding data can be found with only O(1) time complexity.
+
+            > rich data types
+                Redis provides rich data types. You can use different data types for efficient operations according to different scenarios. 
+                These operations are all performed in memory and do not consume a large amount of CPU resources, so the speed is extremely fast.
+
+                > String    
+                > List      
+                > Set        
+                > Hash      
+                > Zset      
+                > Bitmaps     
+                > HyperLogLog
+                > geo        
+                > stream     
+            
+            > I/O Multiplexing
+                Redis uses I/O multiplexing technology and non-blocking I/O.
+                    I/O multiplexing -> one thread is responsible for multiple I/O sources
+                    non-blocking I/O -> dont wait on a I/O source if it doesn't have data
+
+                the steps
+                    > Redis Server is Running at Some Address
+
+                    > Redis Accepts Multiple TCP Connections Through Clients: 
+                        As various clients, which could be applications or services, want to interact with Redis, 
+                        they establish TCP connections. Now a network socket is established between redis and the client. 
+                        A network socket is a virtual communication channel between the client and Redis. 
+                        It’s like a two-way street where data can flow in both directions.
+
+                    > Without I/O Multiplexing: 
+                        To read data from a network socket, Redis initiates a read() system call . 
+                        This read system call, functioning as an I/O operation, is characterised by its blocking nature, 
+                        meaning Redis’s single-threaded process will wait on the associated TCP connection until data becomes available to read. 
+                        This data typically consists of requests and corresponding data sent by clients to Redis. 
+                        This blocking behaviour implies that Redis, with its single-threaded nature, would be confined to processing only one TCP connection at a time. 
+                        The Redis server’s thread would wait on a specific client’s connection until data is ready to be read 
+                        and thus there would be no point of accepting multiple connections.
+
+                    > With I/O Multiplexing
+                        I/O multiplexing allows Redis to monitor multiple connections simultaneously without blocking its main thread. 
+                        Instead of waiting for data on a single connection, Redis can keep an eye on multiple connections at once.
+
+                        Redis uses the select() or poll() system call to register interest in multiple sockets (connections) simultaneously.
+                        These calls allow it to specify a set of sockets it wants to monitor for specific events, such as readiness to read.
+
+                        Redis’s single thread invokes the select() or poll() system call and enters a state of waiting for events. 
+                        instead, it awaits notifications about events on the registered sockets and process the requests from the ready sockets one at a time.
+                        During this time, Redis is not actively processing any specific connection
+
+                        When an event occurs on any of the registered sockets (e.g., data becomes available for reading), the select() or poll() call returns. 
+                        The return value indicates which sockets experienced events, allowing Redis to identify where data is ready to be processed
+
+                        i.e. waiting for events rather than blocking on individual sockets
+                        
+                
+            
