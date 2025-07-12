@@ -122,6 +122,129 @@ redis (REmote Dictionary Service)
                 obtaining too much data at one time
                 a large number of keys expiring
 
+How are the five common Redis data types implemented?
+    1. Internal Implementation of String Type
+        The underlying data structure implementation of the String type is mainly SDS (Simple Dynamic String)
+        SDS is not quite the same as the C string
+            > SDS can not only save text data, but also binary data
+                Because SDS judges whether the string ends by using the value of the len attribute instead of the null character,
+                The actual string data (or binary data) is stored inside a byte array called buf[]
+                Redis treats the contents of buf[] as raw binary data, not as null-terminated C strings.
+                
+                Binary-safe:
+                    SDS can store any bytes, including \0 (null bytes), which normal C strings treat as "end of string".
+                
+                Therefore, SDS can not only store text data, but also can save binary data such as pictures, audio, video, and compressed files.
+            
+            > The time complexity of SDS to obtain the string length is O(1)
+                Because the string of C language does not record its own length, the complexity of obtaining the length is O(n); 
+                while the len attribute in the SDS structure records the string length, so the complexity is O(1).
+            
+            > The SDS API of Redis is safe, and concatenating strings will not cause buffer overflow. 
+                Because SDS will check whether the SDS space meets the requirements before concatenating strings. 
+                If the space is not enough, it will automatically expand, so it will not lead to the problem of buffer overflow.
+
+    2. Internal Implementation of List Type
+        The underlying data structure of the List type is implemented by doubly linked list or ziplist:
+        However, after Redis version 3.2, the underlying data structure of the List data type is only implemented by quicklist, replacing the doubly linked list and ziplist.
+
+        If the number of elements in the list is less than 512 (default value, configurable by list-max-ziplist-entries), 
+        and the value of each element in the list is less than 64 bytes (default value, configurable by list-max-ziplist-value), 
+        Redis will use ziplist as the underlying data structure of the List type;
+                    
+        If the elements of the list do not meet the above conditions, Redis will use doubly linked list as the underlying data structure of the List type;
+
+        ziplist
+            A ziplist is a compact, binary-encoded, contiguous block of memory used to store multiple entries (like strings or integers) in Redis.
+            Each element can be of different size
+            Each entry has metadata, Includes the length of the previous entry, encoding info, and length of current entry, 
+            so Redis can traverse forward and backward without pointers.
+            Redis avoids pointers to save space.
+                Instead of storing memory addresses (prev, next), each entry stores:
+                The length of the previous entry
+                The length of the current entry
+            That way, Redis can jump forward by "skip X bytes", or backward by "go back Y bytes"
+
+            Limitations
+                Adding/removing elements in the middle requires shifting memory, since everything is in one block.
+
+        quicklist
+            A quicklist is a linked list of ziplists.
+            Each node in the quicklist is a ziplist, allowing Redis to:
+                Keep memory usage low (ziplist)
+                Support fast inserts/removals (linked list)
+    
+    3. Internal Implementation of Hash Type
+        The underlying data structure of the Hash type is implemented by ziplist or hash table
+        In Redis 7.0, the ziplist data structure has been deprecated and replaced by the listpack data structure to implement it.
+            istpack 
+                is also a contiguous block of memory, just like ziplist.But Redis redesigned it to make it efficient.
+
+        If the number of elements of the Hash type is less than 512 (default value, configurable by hash-max-ziplist-entries), 
+        and all values are less than 64 bytes (default value, configurable by hash-max-ziplist-value), 
+        Redis will use ziplist as the underlying data structure of the Hash type;
+
+        If the elements of the Hash type do not meet the above conditions, Redis will use hash table as the underlying data structure of the Hash type.
+
+        Scenario: You use a Hash in Redis
+            HSET user:1 name "Alice"
+            HSET user:1 age "25"
+
+            This creates a Hash type called user:1 with two fields:
+                {
+                "name": "Alice",
+                "age": "25"
+                }
+
+            Redis can store this hash in two different internal ways based on size and content.
+
+            When Redis Uses a Ziplist
+                Redis will not use a real hash table if:
+                    The number of field-value pairs is ≤ 512 (default limit)
+                    Each field name and value is ≤ 64 bytes
+
+                Instead, it stores the data as a flat array of bytes (ziplist) like this:
+                    ["name", "Alice", "age", "25"]
+
+                Example lookup (HGET user:1 age):
+                    Redis starts scanning from the beginning:
+                        Sees "name" -> not a match -> skip next (which is "Alice")
+                        Sees "age" -> match!
+                        Return the next entry -> "25"
+            
+            When Redis Uses a Hashtable
+                Once the data grows:
+                    More than 512 fields, or
+                    A field or value exceeds 64 bytes
+                
+                Redis automatically switches the internal encoding from ziplist to a proper hashtable.
+    
+    4. Internal Implementation of Set Type
+        The underlying data structure of the Set type is implemented by hash table or integer set:
+
+        If all the elements in the set are integers and the number of elements is less than 512 (default value, configurable by set-maxintset-entries), 
+        Redis will use integer set as the underlying data structure of the Set type;
+            intset
+                An intset (Integer Set) is an internal data structure used by Redis to store a set of unique integers in a sorted, compact array.
+                | Encoding | Length | [Entry1] [Entry2] [Entry3] ... |
+                    Encoding: Tells Redis the bit size used for each integer (16-bit, 32-bit, or 64-bit)
+                    Length: How many integers are stored
+                
+                the reasong we keep all entry as same size as opposed to ziplist, is for speed,
+                    entry_address = base_address + n * size_of_each_integer
+                this allows for more efficient algos like binary-search
+
+        If the elements in the set do not meet the above conditions, then Redis uses hash table as the underlying data structure of the Set type.
+    
+    5. 
+
+        
+
+
+
+
+
+
 
 
             
