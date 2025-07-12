@@ -65,6 +65,10 @@ redis (REmote Dictionary Service)
                         The return value indicates which sockets experienced events, allowing Redis to identify where data is ready to be processed
 
                         i.e. waiting for events rather than blocking on individual sockets
-                        
+
+                        Its core idea is that through a system call (such as select, poll, epoll, etc.), 
+                        the program can simultaneously block and wait for the ready state of multiple I/O operations. 
+                        When one or more descriptors are ready, the system call returns and tells the program which descriptors are ready for I/O operations. 
+                        hen the program can perform corresponding I/O processing for these ready descriptors.
                 
             
